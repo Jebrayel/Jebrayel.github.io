@@ -203,7 +203,7 @@ footer { font-size: 0.85rem; color: var(--muted); border-top: 1px solid var(--ru
     </div>
     <dl class="facts" aria-label="At a glance">
       <div><dt>2026</dt><dd>Co-op Student of the Year, Algonquin College</dd></div>
-      <div><dt>120+ tests</dt><dd>guarding the Cedaris platform, including its bookkeeping</dd></div>
+      <div><dt>235 tests</dt><dd>guarding the Cedaris platform, including its bookkeeping</dd></div>
       <div><dt>~2 weeks</dt><dd>from an empty repository to live production</dd></div>
       <div><dt>8 months</dt><dd>as a ServiceNow developer co-op at Optovia</dd></div>
       <div><dt>3.83 GPA</dt><dd>Computer Programming diploma</dd></div>
@@ -221,7 +221,7 @@ footer { font-size: 0.85rem; color: var(--muted); border-top: 1px solid var(--ru
         <ul>
           <li>Inventory, quoting, invoicing with PDF and email delivery, a CRM pipeline, a customer portal and double-entry bookkeeping with HST.</li>
           <li>Money is stored in integer cents. The ledger rejects any entry where debits and credits differ, and an invoice posts in a single database transaction.</li>
-          <li>More than 120 automated tests, including a simulated month of trading that proves the books balance.</li>
+          <li>235 automated tests across 49 suites, including a simulated month of trading that proves the books balance.</li>
           <li>Deployed on Railway with managed PostgreSQL and gated migrations through GitHub CI/CD. One codebase serves the public site and the back office.</li>
         </ul>
         <p><strong>How it was built.</strong> I used Claude Code for implementation and owned the requirements, architecture, code review, testing and deployment. I am now working through the stack by hand so I can write every part of it myself.</p>
@@ -283,6 +283,12 @@ footer { font-size: 0.85rem; color: var(--muted); border-top: 1px solid var(--ru
           <img src="img/pipeline.webp" width="1024" height="768" loading="lazy" alt="The CRM pipeline with follow-ups due today and a board of clients by stage: new, contacted, quoted, won and lost.">
         </button>
         <figcaption>CRM pipeline: follow-ups due, and every client by stage.</figcaption>
+      </figure>
+      <figure class="shot wide">
+        <button class="shot-btn" type="button" data-full="img/tests.webp" aria-label="Enlarge screenshot of the test suite passing">
+          <img src="img/tests.webp" width="1115" height="593" loading="lazy" alt="Terminal output from the test suite: 235 tests, 49 suites, 235 passing, 0 failing, finishing in 651 milliseconds.">
+        </button>
+        <figcaption>The suite on a normal run: 235 tests, 49 suites, nothing failing. Each test is named for the rule it defends.</figcaption>
       </figure>
     </div>
     <p class="note">Real screens from the live system. Client names and amounts are blurred.</p>
