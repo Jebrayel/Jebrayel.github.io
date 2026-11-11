@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
 /* Layout: one left-aligned column with a dated margin rail, like a ledger page;
-   the only boxed object is the journal entry in the Cedaris case study. */
+   the only boxed objects are the screenshots and the lightbox. */
 :root {
   --bg: #f4f7f6;
   --surface: #ffffff;
@@ -100,36 +100,35 @@ section { display: flex; flex-direction: column; gap: 28px; }
 .sec-head { display: flex; flex-direction: column; gap: 6px; border-top: 2px solid var(--ink); padding-top: 14px; }
 
 /* case study */
-.case { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 40px; align-items: start; }
-.case-text { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.case-text { display: flex; flex-direction: column; gap: 16px; min-width: 0; max-width: 72ch; }
 .chips { display: flex; flex-direction: row; flex-wrap: wrap; gap: 6px; list-style: none; padding: 0; }
 .chips li { font-family: var(--mono); font-size: 0.78rem; padding: 3px 8px; border-radius: 4px; background: var(--accent-soft); color: var(--ink); }
 
-.journal { background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 20px; display: flex; flex-direction: column; gap: 14px; min-width: 0; }
-.journal label { font-size: 0.9rem; color: var(--muted); display: flex; flex-direction: column; gap: 6px; }
-.journal input {
-  font: 500 1.05rem var(--mono); padding: 9px 12px; width: 100%; max-width: 14em;
-  border: 1.5px solid var(--rule); border-radius: 6px; background: var(--bg); color: var(--ink);
-}
-.journal .err { color: var(--warn); font-size: 0.88rem; min-height: 1.3em; }
-.tablewrap { overflow-x: auto; }
-.journal table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 0.86rem; font-variant-numeric: tabular-nums; }
-.journal th { text-align: right; font-weight: 500; color: var(--muted); font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 6px 0 6px 12px; border-bottom: 1px solid var(--ink); }
-.journal th:first-child, .journal td:first-child { text-align: left; padding-left: 0; font-family: var(--body); }
-.journal td { text-align: right; padding: 7px 0 7px 12px; border-bottom: 1px solid var(--rule); white-space: nowrap; }
-.journal td.cr-acct { padding-left: 1.2em; }
-.journal tfoot td { border-bottom: 0; border-top: 1px solid var(--ink); font-weight: 500; }
-.balanced { font-family: var(--mono); font-size: 0.85rem; color: var(--accent); }
 .note { font-size: 0.82rem; color: var(--muted); }
 
-/* screenshots */
-.shots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 24px; }
-.shot { margin: 0; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-.shot.wide { grid-column: 1 / -1; }
-.shot-btn { display: block; width: 100%; padding: 0; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; background: var(--surface); cursor: zoom-in; }
+/* screenshot carousel */
+.shots { display: flex; flex-direction: column; gap: 12px; max-width: 860px; min-width: 0; }
+.shot-btn {
+  display: block; width: 100%; aspect-ratio: 16 / 10; padding: 0;
+  border: 1px solid var(--rule); border-radius: 8px; overflow: hidden;
+  background: var(--surface); cursor: zoom-in;
+}
 .shot-btn:hover { border-color: var(--accent); }
-.shot-btn img { display: block; width: 100%; height: auto; }
-.shot figcaption { font-size: 0.9rem; color: var(--muted); }
+.shot-btn img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.shot-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.shot-cap { flex: 1 1 14em; min-width: 0; font-size: 0.92rem; }
+.shot-nav { display: flex; align-items: center; gap: 6px; }
+.arrow {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; flex: none; padding: 0; cursor: pointer;
+  border: 1px solid var(--rule); border-radius: 6px;
+  background: var(--surface); color: var(--ink); font-size: 1rem; line-height: 1;
+}
+.arrow:hover { border-color: var(--accent); color: var(--accent); }
+.count { font-family: var(--mono); font-size: 0.82rem; color: var(--muted); font-variant-numeric: tabular-nums; min-width: 3.4em; text-align: center; }
+.dots { display: flex; flex-wrap: wrap; gap: 6px; }
+.dot { width: 9px; height: 9px; flex: none; padding: 0; cursor: pointer; border-radius: 50%; border: 1px solid var(--rule); background: var(--surface); }
+.dot[aria-current="true"] { background: var(--accent); border-color: var(--accent); }
 .lightbox { width: min(1200px, 94vw); max-height: 92vh; padding: 12px; border: 1px solid var(--rule); border-radius: 8px; background: var(--surface); color: var(--ink); }
 .lightbox::backdrop { background: rgba(5, 10, 14, 0.72); }
 .lightbox img { display: block; width: 100%; height: auto; max-height: 76vh; object-fit: contain; }
@@ -164,7 +163,7 @@ footer { font-size: 0.85rem; color: var(--muted); border-top: 1px solid var(--ru
 
 @media (max-width: 760px) {
   .wrap { gap: 56px; }
-  .hero, .case { grid-template-columns: minmax(0, 1fr); gap: 32px; }
+  .hero { grid-template-columns: minmax(0, 1fr); gap: 32px; }
   .projects, .shots { grid-template-columns: minmax(0, 1fr); }
   .row, .skills div { grid-template-columns: minmax(0, 1fr); }
   .row .when { padding-top: 0; }
@@ -218,8 +217,7 @@ footer { font-size: 0.85rem; color: var(--muted); border-top: 1px solid var(--ru
       <p class="label">Featured work</p>
       <h2>The platform that runs Cedaris</h2>
     </div>
-    <div class="case">
-      <div class="case-text">
+    <div class="case-text">
         <p>Cedaris is the PVC fencing supply and installation company I co-own in Ottawa. We were managing quotes, invoices, inventory, suppliers and the books across five different apps, so I designed and shipped one platform to replace them.</p>
         <ul>
           <li>Inventory, quoting, invoicing with PDF and email delivery, a CRM pipeline, a customer portal and double-entry bookkeeping with HST.</li>
@@ -232,69 +230,22 @@ footer { font-size: 0.85rem; color: var(--muted); border-top: 1px solid var(--ru
           <li>Next.js 15</li><li>React 19</li><li>TypeScript</li><li>Prisma</li><li>PostgreSQL</li><li>Tailwind CSS</li><li>GitHub CI/CD</li><li>Railway</li>
         </ul>
         <p><a href="https://cedaris.ca" target="_blank" rel="noopener">Visit cedaris.ca</a> (the back office sits behind a login)</p>
-      </div>
+    </div>
 
-      <div class="journal" aria-labelledby="journal-title">
-        <h3 id="journal-title">Try the posting rule</h3>
-        <label for="subtotal">Invoice subtotal, before tax (CAD)
-          <input id="subtotal" type="text" inputmode="decimal" value="2400.00" autocomplete="off" aria-describedby="subtotal-err">
-        </label>
-        <p class="err" id="subtotal-err" role="alert"></p>
-        <div class="tablewrap">
-          <table>
-            <thead><tr><th scope="col">Account</th><th scope="col">Debit</th><th scope="col">Credit</th></tr></thead>
-            <tbody>
-              <tr><td>Accounts Receivable</td><td id="j-ar"></td><td></td></tr>
-              <tr><td class="cr-acct">Sales Revenue</td><td></td><td id="j-rev"></td></tr>
-              <tr><td class="cr-acct">HST Payable (13%)</td><td></td><td id="j-hst"></td></tr>
-            </tbody>
-            <tfoot><tr><td>Totals</td><td id="j-dr"></td><td id="j-cr"></td></tr></tfoot>
-          </table>
+    <div class="shots" role="group" aria-roledescription="carousel" aria-label="Screenshots of the Cedaris platform">
+      <button class="shot-btn" id="shot-btn" type="button" aria-label="Enlarge this screenshot">
+        <img id="shot-img" src="img/books.webp" width="1024" height="768" alt="">
+      </button>
+      <div class="shot-bar">
+        <p class="shot-cap" id="shot-cap" aria-live="polite"></p>
+        <div class="shot-nav">
+          <button class="arrow" id="shot-prev" type="button" aria-label="Previous screenshot">&#8249;</button>
+          <span class="count" id="shot-count"></span>
+          <button class="arrow" id="shot-next" type="button" aria-label="Next screenshot">&#8250;</button>
         </div>
-        <p class="balanced" id="j-bal"></p>
-        <p class="note">A small illustration of the rule the platform enforces, computed in integer cents in your browser. Example figures, not company data.</p>
+        <div class="dots" id="shot-dots"></div>
       </div>
     </div>
-
-    <div class="shots" aria-label="Screenshots of the Cedaris platform">
-      <figure class="shot wide">
-        <button class="shot-btn" type="button" data-full="img/site-home.webp" aria-label="Enlarge screenshot of the cedaris.ca home page">
-          <img src="img/site-home.webp" width="1600" height="800" loading="lazy" alt="The cedaris.ca home page: PVC fencing, supplied and installed in Ottawa, with a Request a Quote button.">
-        </button>
-        <figcaption>The public site at cedaris.ca, served from the same codebase as the back office.</figcaption>
-      </figure>
-      <figure class="shot">
-        <button class="shot-btn" type="button" data-full="img/dashboard.webp" aria-label="Enlarge screenshot of the dashboard">
-          <img src="img/dashboard.webp" width="1024" height="768" loading="lazy" alt="Back-office dashboard showing money owed, overdue invoices, revenue, stock on hand, recent invoices and open quotes.">
-        </button>
-        <figcaption>Dashboard: receivables, stock and year-to-date figures on one screen.</figcaption>
-      </figure>
-      <figure class="shot">
-        <button class="shot-btn" type="button" data-full="img/invoice.webp" aria-label="Enlarge screenshot of an invoice">
-          <img src="img/invoice.webp" width="1024" height="768" loading="lazy" alt="An invoice page with line items, 13% HST, a recorded payment, and buttons to download a PDF or email the invoice.">
-        </button>
-        <figcaption>An invoice with line items, HST, payments, and PDF and email delivery.</figcaption>
-      </figure>
-      <figure class="shot">
-        <button class="shot-btn" type="button" data-full="img/books.webp" aria-label="Enlarge screenshot of the books">
-          <img src="img/books.webp" width="1024" height="768" loading="lazy" alt="The Books page with a profit and loss statement beside a balance sheet that confirms assets equal liabilities plus equity.">
-        </button>
-        <figcaption>Profit and loss and a balance sheet, generated from the double-entry ledger.</figcaption>
-      </figure>
-      <figure class="shot">
-        <button class="shot-btn" type="button" data-full="img/pipeline.webp" aria-label="Enlarge screenshot of the CRM pipeline">
-          <img src="img/pipeline.webp" width="1024" height="768" loading="lazy" alt="The CRM pipeline with follow-ups due today and a board of clients by stage: new, contacted, quoted, won and lost.">
-        </button>
-        <figcaption>CRM pipeline: follow-ups due, and every client by stage.</figcaption>
-      </figure>
-      <figure class="shot wide">
-        <button class="shot-btn" type="button" data-full="img/tests.webp" aria-label="Enlarge screenshot of the test suite passing">
-          <img src="img/tests.webp" width="1115" height="593" loading="lazy" alt="Terminal output from the test suite: 235 tests, 49 suites, 235 passing, 0 failing, finishing in 651 milliseconds.">
-        </button>
-        <figcaption>The suite on a normal run: 235 tests, 49 suites, nothing failing. Each test is named for the rule it defends.</figcaption>
-      </figure>
-    </div>
-    <p class="note">Real screens from the live system. Client names and amounts are blurred.</p>
 
     <dialog class="lightbox" id="lightbox" aria-label="Enlarged screenshot">
       <img id="lightbox-img" src="" alt="">
@@ -448,54 +399,70 @@ footer { font-size: 0.85rem; color: var(--muted); border-top: 1px solid var(--ru
 
 <script>
 (function () {
-  // --- journal entry, in integer cents ---
-  var input = document.getElementById('subtotal');
-  var err = document.getElementById('subtotal-err');
-  var cell = function (id) { return document.getElementById(id); };
-  var fmt = function (cents) {
-    var s = String(Math.floor(cents / 100)).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    var c = String(cents % 100); if (c.length < 2) c = '0' + c;
-    return s + '.' + c;
-  };
-  function toCents(text) {
-    var t = text.replace(/[$,\s]/g, '');
-    var m = /^(\d{1,7})(?:\.(\d{1,2}))?$/.exec(t);
-    if (!m) return null;
-    var frac = (m[2] || '') + '00';
-    return parseInt(m[1], 10) * 100 + parseInt(frac.slice(0, 2), 10);
+  // --- screenshot carousel ---
+  var SHOTS = [
+    { src: 'img/books.webp', cap: 'The books, generated straight from the ledger.',
+      alt: 'The Books page: a profit and loss statement beside a balance sheet confirming assets equal liabilities plus equity.' },
+    { src: 'img/tests.webp', cap: 'The test suite on an ordinary run.',
+      alt: 'Terminal output from the test suite: 235 tests, 49 suites, 235 passing, 0 failing, in 651 milliseconds.' },
+    { src: 'img/invoice.webp', cap: 'An invoice: line items, HST, payments, and delivery by PDF or email.',
+      alt: 'An invoice page with line items, 13% HST, a recorded payment, and buttons to download a PDF or email it.' },
+    { src: 'img/dashboard.webp', cap: 'The dashboard: receivables, stock and year-to-date figures.',
+      alt: 'Dashboard showing money owed, overdue invoices, revenue, stock on hand, recent invoices and open quotes.' },
+    { src: 'img/pipeline.webp', cap: 'The pipeline: follow-ups due, and every client by stage.',
+      alt: 'CRM pipeline with follow-ups due today and a board of clients by stage: new, contacted, quoted, won, lost.' },
+    { src: 'img/site-home.webp', cap: 'The public site, served from the same codebase as the back office.',
+      alt: 'The cedaris.ca home page: PVC fencing, supplied and installed in Ottawa, with a Request a Quote button.' }
+  ];
+  var shotImg = document.getElementById('shot-img');
+  var shotCap = document.getElementById('shot-cap');
+  var shotCount = document.getElementById('shot-count');
+  var shotDots = document.getElementById('shot-dots');
+  var at = 0;
+
+  SHOTS.forEach(function (s, i) {
+    var d = document.createElement('button');
+    d.className = 'dot';
+    d.type = 'button';
+    d.setAttribute('aria-label', 'Screenshot ' + (i + 1) + ': ' + s.cap);
+    d.addEventListener('click', function () { show(i); });
+    shotDots.appendChild(d);
+  });
+
+  function show(i) {
+    at = (i + SHOTS.length) % SHOTS.length;
+    var s = SHOTS[at];
+    shotImg.src = s.src;
+    shotImg.alt = s.alt;
+    shotCap.textContent = s.cap;
+    shotCount.textContent = (at + 1) + ' / ' + SHOTS.length;
+    Array.prototype.forEach.call(shotDots.children, function (d, j) {
+      d.setAttribute('aria-current', j === at ? 'true' : 'false');
+    });
   }
-  function post() {
-    var sub = toCents(input.value);
-    if (sub === null || sub === 0) {
-      err.textContent = 'Enter an amount like 2400.00, up to 9,999,999.99.';
-      return;
-    }
-    err.textContent = '';
-    var hst = Math.floor((sub * 13 + 50) / 100); // 13% HST, rounded to the cent
-    var total = sub + hst;
-    cell('j-ar').textContent = fmt(total);
-    cell('j-rev').textContent = fmt(sub);
-    cell('j-hst').textContent = fmt(hst);
-    cell('j-dr').textContent = fmt(total);
-    cell('j-cr').textContent = fmt(sub + hst);
-    cell('j-bal').textContent = 'Balanced: debits = credits = $' + fmt(total);
-  }
-  input.addEventListener('input', post);
-  post();
+  document.getElementById('shot-prev').addEventListener('click', function () { show(at - 1); });
+  document.getElementById('shot-next').addEventListener('click', function () { show(at + 1); });
+  document.querySelector('.shots').addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowLeft') { show(at - 1); }
+    if (e.key === 'ArrowRight') { show(at + 1); }
+  });
+  show(0);
+
+  // preload the rest once the page is quiet, so stepping through is instant
+  setTimeout(function () {
+    SHOTS.forEach(function (s) { var p = new Image(); p.src = s.src; });
+  }, 1200);
 
   // --- screenshot lightbox ---
   var box = document.getElementById('lightbox');
   var boxImg = document.getElementById('lightbox-img');
   var boxCap = document.getElementById('lightbox-cap');
   if (box && typeof box.showModal === 'function') {
-    Array.prototype.forEach.call(document.querySelectorAll('.shot-btn'), function (b) {
-      b.addEventListener('click', function () {
-        var img = b.querySelector('img');
-        boxImg.src = b.getAttribute('data-full');
-        boxImg.alt = img.alt;
-        boxCap.textContent = b.parentNode.querySelector('figcaption').textContent;
-        box.showModal();
-      });
+    document.getElementById('shot-btn').addEventListener('click', function () {
+      boxImg.src = SHOTS[at].src;
+      boxImg.alt = SHOTS[at].alt;
+      boxCap.textContent = SHOTS[at].cap;
+      box.showModal();
     });
     document.getElementById('lightbox-close').addEventListener('click', function () { box.close(); });
     box.addEventListener('click', function (e) { if (e.target === box) box.close(); });
